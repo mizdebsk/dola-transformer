@@ -15,10 +15,38 @@
  */
 package io.kojan.dola.transformer;
 
+/**
+ * The {@code GidAidMatcher} class matches a combination of group ID (GID) and artifact ID (AID)
+ * against a glob-style pattern of the form {@code "gid:aid"}.
+ *
+ * <p>Both parts of the pattern can include wildcards:
+ *
+ * <ul>
+ *   <li>{@code *} matches zero or more characters
+ *   <li>{@code ?} matches exactly one character
+ * </ul>
+ *
+ * <p>Example usage:
+ *
+ * <pre>
+ *     GidAidMatcher matcher = new GidAidMatcher("com.example:*");
+ *     boolean result = matcher.matches("com.example", "my-artifact");  // returns true
+ * </pre>
+ */
 public class GidAidMatcher {
+
+    /** Glob pattern matcher for the group ID. */
     private final GlobMatcher gidRe;
+
+    /** Glob pattern matcher for the artifact ID. */
     private final GlobMatcher aidRe;
 
+    /**
+     * Constructs a {@code GidAidMatcher} from a colon-separated glob pattern string.
+     *
+     * @param ga the glob pattern in the format {@code "gid:aid"}
+     * @throws RuntimeException if the input string does not contain a colon
+     */
     public GidAidMatcher(String ga) {
         int i = ga.indexOf(':');
         if (i < 0) {
@@ -30,7 +58,15 @@ public class GidAidMatcher {
         this.aidRe = new GlobMatcher(aid);
     }
 
+    /**
+     * Determines whether the given {@code gid} and {@code aid} match the glob patterns.
+     *
+     * @param gid the group ID to test
+     * @param aid the artifact ID to test
+     * @return {@code true} if both {@code gid} and {@code aid} match their respective patterns;
+     *     {@code false} otherwise
+     */
     public boolean matches(String gid, String aid) {
-        return gidRe.matches(aid) && aidRe.matches(aid);
+        return gidRe.matches(gid) && aidRe.matches(aid);
     }
 }
