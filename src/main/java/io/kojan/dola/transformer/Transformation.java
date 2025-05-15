@@ -18,18 +18,30 @@ package io.kojan.dola.transformer;
 import org.apache.maven.api.model.Model;
 
 /**
- * Represents an operation that transforms a Maven {@link Model}.
+ * Represents a transformation operation that modifies a Maven {@link Model}.
  *
- * <p>Implementations define how to modify or process a Maven model as part of a transformation
- * pipeline.
+ * <p>Transformations are applied to manipulate POM models programmatically.
+ *
+ * <p>Implementations may update elements such as:
+ *
+ * <ul>
+ *   <li>Dependencies
+ *   <li>Plugins
+ *   <li>Parent declarations
+ *   <li>Modules (subprojects)
+ *   <li>Project metadata (groupId, version, etc.)
+ * </ul>
+ *
+ * <p>Transformations may return the original model instance (if no change is needed) or a modified
+ * one, depending on the logic.
  */
 public interface Transformation {
 
     /**
-     * Applies a transformation to the given {@link Model}.
+     * Applies a transformation to the given Maven {@link Model}.
      *
      * @param model the input model to transform; must not be {@code null}
-     * @return the transformed {@link Model}, which may be the same instance or a modified copy
+     * @return the transformed {@link Model}; may be the original instance if no changes are made
      */
     Model transform(Model model);
 }
