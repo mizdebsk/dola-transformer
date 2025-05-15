@@ -15,6 +15,19 @@
  */
 package io.kojan.dola.transformer;
 
+/**
+ * A factory interface for producing {@link Transformation} instances based on a string argument.
+ *
+ * <p>Implementations interpret the argument and return a corresponding transformation.
+ */
 public interface Transformer {
+
+    /**
+     * Produces a {@link Transformation} based on the given argument.
+     *
+     * @param arg a string input used to configure or select the transformation; must not be {@code
+     *     null}
+     * @return a {@link Transformation} instance
+     */
     Transformation produceTransformation(String arg);
 }
