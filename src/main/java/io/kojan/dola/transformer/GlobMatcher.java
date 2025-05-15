@@ -25,7 +25,7 @@ public class GlobMatcher {
         if (glob.isEmpty()) {
             return null;
         }
-        return Pattern.compile(glob.replaceAll("\\*", ".*").replaceAll("\\?", ".?"));
+        return Pattern.compile(glob.replaceAll("\\*", ".*").replaceAll("\\?", "."));
     }
 
     public GlobMatcher(String glob) {
