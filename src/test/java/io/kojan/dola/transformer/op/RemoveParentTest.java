@@ -63,6 +63,40 @@ public class RemoveParentTest {
     }
 
     @Test
+    public void testParentRemovedButGroupIdAndVersionNotCopied() {
+        String matcherArg = "com.example:parent-artifact";
+        RemoveParent transformer = new RemoveParent();
+        Transformation transformation = transformer.produceTransformation(matcherArg);
+
+        // Mock parent
+        Parent parent = mock(Parent.class);
+        expect(parent.getGroupId()).andReturn("com.example").anyTimes();
+        expect(parent.getArtifactId()).andReturn("parent-artifact").anyTimes();
+        expect(parent.getVersion()).andReturn("1.0.0").anyTimes(); // should NOT be used
+
+        // Mock original model with its own groupId and version
+        Model originalModel = mock(Model.class);
+        expect(originalModel.getParent()).andReturn(parent).anyTimes();
+        expect(originalModel.getGroupId()).andReturn("com.example.child").anyTimes(); // already set
+        expect(originalModel.getVersion()).andReturn("2.0.0").anyTimes(); // already set
+
+        // Parent is removed only, no groupId/version copied
+        Model newModel = mock(Model.class);
+        expect(originalModel.withParent(null)).andReturn(newModel);
+
+        // Since model already has groupId and version, no .withGroupId() or .withVersion() calls
+        // Final result is the model with parent removed only
+        expectLastCall().andStubReturn(newModel); // needed for any other call chaining
+
+        replay(parent, originalModel, newModel);
+
+        Model result = transformation.transform(originalModel);
+        assertSame(newModel, result);
+
+        verify(parent, originalModel, newModel);
+    }
+
+    @Test
     public void testParentDoesNotMatch_NoChange() {
         String matcherArg = "com.example:some-other-parent";
         RemoveParent transformer = new RemoveParent();
