@@ -15,7 +15,6 @@
  */
 package io.kojan.dola.transformer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -29,48 +28,12 @@ import org.apache.maven.api.spi.ModelTransformerException;
 @Singleton
 public class DolaTransformer implements ModelTransformer {
 
-    private final List<Transformation> transformations = new ArrayList<>();
+    private final List<Transformation> transformations;
 
     @Inject
     public DolaTransformer(Map<String, Transformer> transformers) {
-        List<String> keys =
-                System.getProperties().keySet().stream()
-                        .map(Object::toString)
-                        .filter(key -> key.toString().startsWith("dola.transformer.insn."))
-                        .sorted()
-                        .toList();
-        for (String key : keys) {
-            String op = key.substring(key.lastIndexOf('.') + 1);
-            String val = System.getProperty(key);
-            String arg = val;
-            int j = val.lastIndexOf('@');
-            String sel = null;
-            List<GidAidMatcher> selectors = new ArrayList<>();
-            if (j >= 0) {
-                arg = val.substring(0, j);
-                sel = val.substring(j + 1);
-                if (sel.startsWith("(") && sel.endsWith(")")) {
-                    sel = sel.substring(1, sel.length() - 1);
-                }
-                for (int i = sel.indexOf(','); i >= 0; i = sel.indexOf(',')) {
-                    selectors.add(new GidAidMatcher(sel.substring(0, i)));
-                    sel = sel.substring(i + 1);
-                }
-                selectors.add(new GidAidMatcher(sel));
-            }
-            Log.debug("instruction op=" + op + ", arg=" + arg);
-            Transformer transformer = transformers.get(op);
-            if (transformer == null) {
-                Log.debug("no such transformer: " + op);
-                continue;
-            }
-            Transformation transformation = transformer.produceTransformation(arg);
-            transformations.add(
-                    new SelectiveTransformation(
-                            selectors,
-                            transformation,
-                            "op=" + op + ", arg=" + arg + ", sel=" + sel));
-        }
+        transformations =
+                TransformationParser.parseFromProperties(transformers, System.getProperties());
     }
 
     public Model transform(Model model) {
