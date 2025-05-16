@@ -15,6 +15,7 @@
  */
 package io.kojan.dola.transformer;
 
+import java.util.Collection;
 import java.util.List;
 import org.apache.maven.api.model.Model;
 
@@ -48,8 +49,8 @@ public class SelectiveTransformation implements Transformation {
      * @param desc a textual description of this transformation, used in {@link #toString()}
      */
     public SelectiveTransformation(
-            List<GidAidMatcher> selectors, Transformation transformation, String desc) {
-        this.selectors = selectors;
+            Collection<GidAidMatcher> selectors, Transformation transformation, String desc) {
+        this.selectors = List.copyOf(selectors);
         this.transformation = transformation;
         this.desc = desc;
     }
