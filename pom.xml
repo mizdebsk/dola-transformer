@@ -22,7 +22,7 @@
     <version>7</version>
   </parent>
   <artifactId>dola-transformer</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>Dola Transformer</name>
   <description>Maven 4 extension for transforming project models</description>
   <url>https://github.com/mizdebsk/dola-transformer</url>
