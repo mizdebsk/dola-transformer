@@ -71,11 +71,11 @@ public class GlobMatcher {
     /**
      * Tests whether the given string matches the glob pattern.
      *
-     * @param str the string to test
+     * @param str the string to test; if {@code null}, the result is {@code false}
      * @return {@code true} if the pattern is {@code null} (i.e., empty glob) or the string matches
-     *     the pattern; {@code false} otherwise
+     *     the pattern; {@code false} otherwise, including if {@code str} is {@code null}
      */
     public boolean matches(String str) {
-        return pattern == null || pattern.matcher(str).matches();
+        return str != null && (pattern == null || pattern.matcher(str).matches());
     }
 }
