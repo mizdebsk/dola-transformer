@@ -1,6 +1,7 @@
 [![build status](https://img.shields.io/github/actions/workflow/status/mizdebsk/dola-transformer/ci.yml?branch=master)](https://github.com/mizdebsk/dola-transformer/actions/workflows/ci.yml?query=branch%3Amaster)
 [![License](https://img.shields.io/github/license/mizdebsk/dola-transformer.svg?label=License)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central version](https://img.shields.io/maven-central/v/io.kojan/dola-transformer.svg?label=Maven%20Central)](https://search.maven.org/artifact/io.kojan/dola-transformer)
+![Fedora Rawhide version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmdapi.fedoraproject.org%2Frawhide%2Fpkg%2Fdola-transformer&query=%24.version&label=Fedora%20Rawhide)
 [![Javadoc](https://javadoc.io/badge2/io.kojan/dola-transformer/javadoc.svg)](https://javadoc.io/doc/io.kojan/dola-transformer)
 
 Dola Transformer
